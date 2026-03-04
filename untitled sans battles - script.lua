@@ -57,3 +57,16 @@ RunService.Heartbeat:Connect(function()
 end)
 
 end)
+
+local Tab = Window:NewTab("дефолт скрипты")
+
+local Section = Tab:NewSection("scripts")
+
+Section:NewButton("infinity_yield", "типо админ панель", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+
+end)
+
+Section:NewButton("DEX_explorer", "позволяет залазить в файлы игры", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/UltraFEmotes/im-bored/refs/heads/main/dexnoapi.lua"))()
+end)
