@@ -28,10 +28,8 @@ end)
 local Section = Tab:NewSection("остальные силы")
 
 Section:NewButton("авто лив", "автоматически ливает когда кто то заходит на сервер", function()
-    game.Players.PlayerAdded:Connect(function()
-
-game.Players.LocalPlayer:Kick("Kicked because someone joined the game")
-
+    game.Players.PlayerAdded:Connect(function(player)
+    game.Players.LocalPlayer:Kick("Kicked because " .. player.Name .. " joined the game")
 end)
 end)
 
@@ -160,6 +158,11 @@ end)
 
 Section:NewButton("WatterFall", "телепортирует в водопадье", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(540.083679, 202.89212, 3383.97778, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+end)
+
+Section:NewButton("Corridor", "телепортирует в коридор", function()
+    tion()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2493.26636, 144.424667, 7829.0957, -4.529953e-06, -9.68575478e-07, -1, 0.406711876, -0.913556457, -9.68575478e-07, -0.913556457, -0.406711876, 4.529953e-06)
 end)
 
 Section:NewButton("La jupo hall", "телепортирует в ла джупо коридор", function()
