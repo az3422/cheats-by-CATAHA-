@@ -1,4 +1,4 @@
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Robojini/Tuturial_UI_Library/main/UI_Template_1"))()
+ocal Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Robojini/Tuturial_UI_Library/main/UI_Template_1"))()
 
 local Window = Library.CreateLib("CATAHA hub", "RJTheme3")
 
@@ -161,7 +161,6 @@ Section:NewButton("WatterFall", "телепортирует в водопадь�
 end)
 
 Section:NewButton("Corridor", "телепортирует в коридор", function()
-    tion()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2493.26636, 144.424667, 7829.0957, -4.529953e-06, -9.68575478e-07, -1, 0.406711876, -0.913556457, -9.68575478e-07, -0.913556457, -0.406711876, 4.529953e-06)
 end)
 
