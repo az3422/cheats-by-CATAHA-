@@ -66,6 +66,11 @@ end)
 
 end)
 
+Section:NewButton("sell KR", "продает кр", function()
+    game:GetService("ReplicatedStorage"):WaitForChild("ShopPurchases"):WaitForChild("krToLvAll"):FireServer()
+end)
+
+
 Section:NewButton("aim lock player (BIND C)", "привязывает экран к игроку позволяя легко попадать", function()
     local UIS = game:GetService("UserInputService")
 local Players = game:GetService("Players")
