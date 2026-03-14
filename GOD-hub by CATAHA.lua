@@ -14,10 +14,6 @@ Section:NewSlider("сила прыжка", "позволяет выше прыг
     game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
 end)
 
-Section:NewButton("noclip", "ну тут и так все ясно, ноуклип", function()
-    
-end)
-
 local Section = Tab:NewSection("reset stats")
 
 Section:NewButton("ресет статов", "делает дефолтную скорость и силу прыжка", function()
@@ -177,6 +173,293 @@ Section:NewButton("Baseplate", "телепортирует на басплейт
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(16364.2246, 48304.2422, -35074.4141, 0.356812239, 0.934176087, 0, -0.934176087, 0.356812239, -0, -0, 0, 1)
 end)
 
+local Tab = Window:NewTab("Undertale Last Multiverse")
+
+local Section = Tab:NewSection("Main")
+
+local Section = Tab:NewSection("[BIND H] Undertale Last Multiverse AUTO FARM")
+
+Section:NewButton("Auto collector DTsouls", "collect dt souls", function()
+    local Players      = game:GetService("Players")
+local RunService   = game:GetService("RunService")
+local UserInput    = game:GetService("UserInputService")
+
+local player       = Players.LocalPlayer
+local character    = player.Character or player.CharacterAdded:Wait()
+local humanoidRoot = character:WaitForChild("HumanoidRootPart")
+
+local isRunning = true
+
+UserInput.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
+        isRunning = false
+    end
+end)
+
+RunService.Heartbeat:Connect(function()
+    if not isRunning then return end
+
+    for _, obj in pairs(game:GetDescendants()) do
+        if obj.Name == "DTsoul" and obj:IsA("BasePart") then
+            obj.CFrame = humanoidRoot.CFrame
+        end
+    end
+end)
+end)
+
+Section:NewButton("Auto collector white souls", "collect white souls", function()
+       local Players      = game:GetService("Players")
+local RunService   = game:GetService("RunService")
+local UserInput    = game:GetService("UserInputService")
+
+local player       = Players.LocalPlayer
+local character    = player.Character or player.CharacterAdded:Wait()
+local humanoidRoot = character:WaitForChild("HumanoidRootPart")
+
+local isRunning = true
+
+UserInput.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
+        isRunning = false
+    end
+end)
+
+RunService.Heartbeat:Connect(function()
+    if not isRunning then return end
+
+    for _, obj in pairs(game:GetDescendants()) do
+        if obj.Name == "MSoul1" and obj:IsA("BasePart") then
+            obj.CFrame = humanoidRoot.CFrame
+        end
+    end
+end)
+end)
+
+Section:NewButton("Auto collector KidnessSouls", "collect KidnessSouls", function()
+       local Players      = game:GetService("Players")
+local RunService   = game:GetService("RunService")
+local UserInput    = game:GetService("UserInputService")
+
+local player       = Players.LocalPlayer
+local character    = player.Character or player.CharacterAdded:Wait()
+local humanoidRoot = character:WaitForChild("HumanoidRootPart")
+
+local isRunning = true
+
+UserInput.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
+        isRunning = false
+    end
+end)
+
+RunService.Heartbeat:Connect(function()
+    if not isRunning then return end
+
+    for _, obj in pairs(game:GetDescendants()) do
+        if obj.Name == "KindnessSoul" and obj:IsA("BasePart") then
+            obj.CFrame = humanoidRoot.CFrame
+        end
+    end
+end)
+end)
+
+Section:NewButton("Auto collector HATE souls", "collect hate soul", function()
+       local Players      = game:GetService("Players")
+local RunService   = game:GetService("RunService")
+local UserInput    = game:GetService("UserInputService")
+
+local player       = Players.LocalPlayer
+local character    = player.Character or player.CharacterAdded:Wait()
+local humanoidRoot = character:WaitForChild("HumanoidRootPart")
+
+local isRunning = true
+
+UserInput.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
+        isRunning = false
+    end
+end)
+
+RunService.Heartbeat:Connect(function()
+    if not isRunning then return end
+
+    for _, obj in pairs(game:GetDescendants()) do
+        if obj.Name == "HATEsoul" and obj:IsA("BasePart") then
+            obj.CFrame = humanoidRoot.CFrame
+        end
+    end
+end)
+end)
+
+Section:NewButton("Auto collector FearSouls", "collect fear soul", function()
+      local Players      = game:GetService("Players")
+local RunService   = game:GetService("RunService")
+local UserInput    = game:GetService("UserInputService")
+
+local player       = Players.LocalPlayer
+local character    = player.Character or player.CharacterAdded:Wait()
+local humanoidRoot = character:WaitForChild("HumanoidRootPart")
+
+local isRunning = true
+
+UserInput.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
+        isRunning = false
+    end
+end)
+
+RunService.Heartbeat:Connect(function()
+    if not isRunning then return end
+
+    for _, obj in pairs(game:GetDescendants()) do
+        if obj.Name == "FearSoul" and obj:IsA("BasePart") then
+            obj.CFrame = humanoidRoot.CFrame
+        end
+    end
+end)
+end)
+
+Section:NewButton("Auto EXP collector", "EXP COLLECT", function()
+       local Players      = game:GetService("Players")
+local RunService   = game:GetService("RunService")
+local UserInput    = game:GetService("UserInputService")
+
+local player       = Players.LocalPlayer
+local character    = player.Character or player.CharacterAdded:Wait()
+local humanoidRoot = character:WaitForChild("HumanoidRootPart")
+
+local isRunning = true
+
+UserInput.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
+        isRunning = false
+    end
+end)
+
+RunService.Heartbeat:Connect(function()
+    if not isRunning then return end
+
+    for _, obj in pairs(game:GetDescendants()) do
+        if obj.Name == "Exp2" and obj:IsA("BasePart") then
+            obj.CFrame = humanoidRoot.CFrame
+        end
+    end
+end)
+end)
+
+Section:NewButton("Auto Collector RAINBOW SOULS", "collect rainbow soul", function()
+       local Players      = game:GetService("Players")
+local RunService   = game:GetService("RunService")
+local UserInput    = game:GetService("UserInputService")
+
+local player       = Players.LocalPlayer
+local character    = player.Character or player.CharacterAdded:Wait()
+local humanoidRoot = character:WaitForChild("HumanoidRootPart")
+
+local isRunning = true
+
+UserInput.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
+        isRunning = false
+    end
+end)
+
+RunService.Heartbeat:Connect(function()
+    if not isRunning then return end
+
+    for _, obj in pairs(game:GetDescendants()) do
+        if obj.Name == "RAINBOWSOUL" and obj:IsA("BasePart") then
+            obj.CFrame = humanoidRoot.CFrame
+        end
+    end
+end)
+end)
+
+Section:NewButton("Auto Collector Perserverance souls", "collect Perserverance soul", function()
+       local Players      = game:GetService("Players")
+local RunService   = game:GetService("RunService")
+local UserInput    = game:GetService("UserInputService")
+
+local player       = Players.LocalPlayer
+local character    = player.Character or player.CharacterAdded:Wait()
+local humanoidRoot = character:WaitForChild("HumanoidRootPart")
+
+local isRunning = true
+
+UserInput.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
+        isRunning = false
+    end
+end)
+
+RunService.Heartbeat:Connect(function()
+    if not isRunning then return end
+
+    for _, obj in pairs(game:GetDescendants()) do
+        if obj.Name == "Perserverancesoul" and obj:IsA("BasePart") then
+            obj.CFrame = humanoidRoot.CFrame
+        end
+    end
+end)
+end)
+
+Section:NewButton("Auto Collector Intergrity Souls", "collect", function()
+      local Players      = game:GetService("Players")
+local RunService   = game:GetService("RunService")
+local UserInput    = game:GetService("UserInputService")
+
+local player       = Players.LocalPlayer
+local character    = player.Character or player.CharacterAdded:Wait()
+local humanoidRoot = character:WaitForChild("HumanoidRootPart")
+
+local isRunning = true
+
+UserInput.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
+        isRunning = false
+    end
+end)
+
+RunService.Heartbeat:Connect(function()
+    if not isRunning then return end
+
+    for _, obj in pairs(game:GetDescendants()) do
+        if obj.Name == "IntergritySoul" and obj:IsA("BasePart") then
+            obj.CFrame = humanoidRoot.CFrame
+        end
+    end
+end)
+end)
+
+Section:NewButton("Auto Collector Bravery Soul", "collect", function()
+       local Players      = game:GetService("Players")
+local RunService   = game:GetService("RunService")
+local UserInput    = game:GetService("UserInputService")
+
+local player       = Players.LocalPlayer
+local character    = player.Character or player.CharacterAdded:Wait()
+local humanoidRoot = character:WaitForChild("HumanoidRootPart")
+
+local isRunning = true
+
+UserInput.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
+        isRunning = false
+    end
+end)
+
+RunService.Heartbeat:Connect(function()
+    if not isRunning then return end
+
+    for _, obj in pairs(game:GetDescendants()) do
+        if obj.Name == "BraverySoul" and obj:IsA("BasePart") then
+            obj.CFrame = humanoidRoot.CFrame
+        end
+    end
+end)
+end)
+
+
 local Tab = Window:NewTab("дефолт скрипты")
 
 local Section = Tab:NewSection("scripts")
@@ -188,4 +471,8 @@ end)
 
 Section:NewButton("DEX_explorer", "позволяет залазить в файлы игры", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/UltraFEmotes/im-bored/refs/heads/main/dexnoapi.lua"))()
+end)
+
+Section:NewButton("GodMode by @botreal1", "godmode", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Rawbr10/Roblox-Scripts/refs/heads/main/God%20Mode%20Script%20Universal"))()
 end)
