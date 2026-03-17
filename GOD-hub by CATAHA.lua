@@ -30,6 +30,78 @@ Section:NewButton("Auto Leave", "it automatically pours when someone logs in to 
 end)
 end)
 
+Section:NewButton("Target Gui (BUGS)", "target player TP", function()
+    --// Setting \\--
+local targetPlayerName = "" -- Переменная для хранения имени целевого игрока
+local runScript = true -- Переменная для контроля состояния выполнения скрипта
+
+--// Variable \\--
+local player = game:GetService("Players").LocalPlayer
+local PlayersService = game:GetService("Players")
+
+--// Create GUI \\--
+local screenGui = Instance.new("ScreenGui")
+local textBox = Instance.new("TextBox")
+local button = Instance.new("TextButton")
+local stopButton = Instance.new("TextButton") -- Кнопка остановки
+
+screenGui.Parent = player:WaitForChild("PlayerGui")
+screenGui.Name = "TargetPlayerGui"
+
+textBox.Parent = screenGui
+textBox.Position = UDim2.new(0.5, -100, 0, 10)
+textBox.Size = UDim2.new(0, 200, 0, 50)
+textBox.PlaceholderText = "enter the player nick"
+
+button.Parent = screenGui
+button.Position = UDim2.new(0.5, -50, 0, 70)
+button.Size = UDim2.new(0, 100, 0, 50)
+button.Text = "Activate"
+
+stopButton.Parent = screenGui
+stopButton.Position = UDim2.new(0.5, -50, 0, 130)
+stopButton.Size = UDim2.new(0, 100, 0, 50)
+stopButton.Text = "Stop"
+
+--// Button Click Function \\--
+button.MouseButton1Click:Connect(function()
+    targetPlayerName = textBox.Text
+end)
+
+stopButton.MouseButton1Click:Connect(function()
+    runScript = false -- Устанавливаем состояние выполнения как false
+end)
+
+--// Script \\--
+game:GetService("RunService").RenderStepped:Connect(function()
+    if not runScript then return end -- Если runScript равно false, прекращаем выполнение
+
+    local targetPlayer = PlayersService:FindFirstChild(targetPlayerName)
+    
+    if targetPlayer and targetPlayer.Character then
+        local targetCharacter = targetPlayer.Character
+        if targetCharacter:FindFirstChild("Humanoid") and targetCharacter.Humanoid.Health > 0 and targetCharacter:FindFirstChild("HumanoidRootPart") then
+            
+            -- Перемещаем персонажа к целевому игроку
+            local targetPosition = targetCharacter.HumanoidRootPart.Position
+            player.Character:MoveTo(targetPosition)
+
+            -- Наносим удар, если у игрока есть инструмент
+            local tool = player.Character and player.Character:FindFirstChildOfClass("Tool")
+            if tool and tool:FindFirstChild("Handle") then
+                tool:Activate()
+                for _, part in ipairs(targetCharacter:GetChildren()) do
+                    if part:IsA("BasePart") then
+                        firetouchinterest(tool.Handle, part, 0)
+                        firetouchinterest(tool.Handle, part, 1)
+                    end
+                end
+            end
+        end
+    end
+end)
+end)
+
 local Tab = Window:NewTab("untitled sans battles")
 
 local Section = Tab:NewSection("Main")
@@ -909,6 +981,109 @@ Section:NewButton("Judgement hall", "tp judgement hall", function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2471.13086, 2566.6438, -1156.29651, -1, 0, 0, 0, 1, 0, 0, 0, -1)
 end)
 
+
+Section:NewButton("ESP players", "ESP players", function()
+    local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- by Boston and ChatGPT
+local function createHighlight(player)
+    if player.Character and not player.Character:FindFirstChild("ESPHighlight") then
+        local highlight = Instance.new("Highlight")
+        highlight.Name = "ESPHighlight"
+        highlight.FillColor = Color3.fromRGB(255, 0, 0)
+        highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight.FillTransparency = 0.6 -- ปรับให้จางลง
+        highlight.OutlineTransparency = 0
+        highlight.Adornee = player.Character
+        highlight.Parent = player.Character
+    end
+end
+
+
+local function createNameTag(player)
+    if player.Character and player.Character:FindFirstChild("Head") and not player.Character.Head:FindFirstChild("NameTag") then
+        local billboard = Instance.new("BillboardGui")
+        billboard.Name = "NameTag"
+        billboard.Adornee = player.Character.Head
+        billboard.Size = UDim2.new(0, 130, 0, 25) -- ปรับให้เล็กลง
+        billboard.StudsOffset = Vector3.new(0, 2, 0)
+        billboard.AlwaysOnTop = true
+        billboard.Parent = player.Character.Head
+
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Name = "TagLabel"
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.TextColor3 = Color3.new(1, 1, 1)
+        textLabel.Font = Enum.Font.Cartoon
+        textLabel.TextScaled = true
+        textLabel.TextStrokeTransparency = 0.6
+        textLabel.Text = ""
+        textLabel.Parent = billboard
+    end
+end
+
+
+local function updateNameTag(player)
+    if player.Character and player.Character:FindFirstChild("Head") and player.Character.Head:FindFirstChild("NameTag") and player.Character:FindFirstChild("Humanoid") then
+        local tag = player.Character.Head.NameTag.TagLabel
+        local distance = (LocalPlayer.Character.PrimaryPart.Position - player.Character.PrimaryPart.Position).Magnitude
+        local health = math.floor(player.Character.Humanoid.Health)
+        tag.Text = player.Name .. " | " .. string.format("%.0f", distance).."m | ❤️"..health
+    end
+end
+
+
+local function updateHighlight(player)
+    if player.Character and player.Character:FindFirstChild("ESPHighlight") and player.Character:FindFirstChild("Humanoid") then
+        if player.Character.Humanoid.Health <= 0 then
+            player.Character.ESPHighlight.FillColor = Color3.fromRGB(120, 0, 0) -- แดงเข้มตอนตาย
+        else
+            player.Character.ESPHighlight.FillColor = Color3.fromRGB(255, 0, 0) -- แดงสดตอนอยู่
+        end
+    end
+end
+
+
+local function setupESP(player)
+    if player ~= LocalPlayer then
+        player.CharacterAdded:Connect(function()
+            wait(0.1)
+            createHighlight(player)
+            createNameTag(player)
+        end)
+        if player.Character then
+            createHighlight(player)
+            createNameTag(player)
+        end
+    end
+end
+
+
+for _, player in ipairs(Players:GetPlayers()) do
+    setupESP(player)
+end
+
+
+Players.PlayerAdded:Connect(function(player)
+    setupESP(player)
+end)
+
+
+while true do
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            if player.Character and player.Character:FindFirstChild("Humanoid") then
+                updateNameTag(player)
+                updateHighlight(player)
+            end
+        end
+    end
+    wait(0.3)
+end
+end)
+
 local Tab = Window:NewTab("Мурино хоррор")
 
 local Section = Tab:NewSection("Сoming soon!")
@@ -1019,11 +1194,11 @@ local Tab = Window:NewTab("NOT my scripts")
 
 local Section = Tab:NewSection("scripts")
 
-Section:NewButton("infinite_yield", "типо админ панель", function()
+Section:NewButton("infinite_yield", "admin panel", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
 end)
 
-Section:NewButton("DEX_explorer", "позволяет залазить в файлы игры", function()
+Section:NewButton("DEX_explorer", "files games", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/UltraFEmotes/im-bored/refs/heads/main/dexnoapi.lua"))()
 end)
 
