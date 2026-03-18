@@ -19,7 +19,7 @@ local Section = Tab:NewSection("reset stats")
 
 Section:NewButton("reset stats", "makes the default speed and jump power", function()
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 20
-	game.Players.LocalPlayer.Character.Humanoid.JumpPower = 40
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = 40
 end)
 
 local Section = Tab:NewSection("Other powers")
@@ -1084,6 +1084,280 @@ while true do
 end
 end)
 
+local Tab = Window:NewTab("Sans Game Remake")
+
+local Section = Tab:NewSection("Main")
+
+Section:NewButton("ESP players", "ESP players", function()
+    local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- by Boston and ChatGPT
+local function createHighlight(player)
+    if player.Character and not player.Character:FindFirstChild("ESPHighlight") then
+        local highlight = Instance.new("Highlight")
+        highlight.Name = "ESPHighlight"
+        highlight.FillColor = Color3.fromRGB(255, 0, 0)
+        highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+        highlight.FillTransparency = 0.6 -- ปรับให้จางลง
+        highlight.OutlineTransparency = 0
+        highlight.Adornee = player.Character
+        highlight.Parent = player.Character
+    end
+end
+
+
+local function createNameTag(player)
+    if player.Character and player.Character:FindFirstChild("Head") and not player.Character.Head:FindFirstChild("NameTag") then
+        local billboard = Instance.new("BillboardGui")
+        billboard.Name = "NameTag"
+        billboard.Adornee = player.Character.Head
+        billboard.Size = UDim2.new(0, 130, 0, 25) -- ปรับให้เล็กลง
+        billboard.StudsOffset = Vector3.new(0, 2, 0)
+        billboard.AlwaysOnTop = true
+        billboard.Parent = player.Character.Head
+
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Name = "TagLabel"
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.TextColor3 = Color3.new(1, 1, 1)
+        textLabel.Font = Enum.Font.Cartoon
+        textLabel.TextScaled = true
+        textLabel.TextStrokeTransparency = 0.6
+        textLabel.Text = ""
+        textLabel.Parent = billboard
+    end
+end
+
+
+local function updateNameTag(player)
+    if player.Character and player.Character:FindFirstChild("Head") and player.Character.Head:FindFirstChild("NameTag") and player.Character:FindFirstChild("Humanoid") then
+        local tag = player.Character.Head.NameTag.TagLabel
+        local distance = (LocalPlayer.Character.PrimaryPart.Position - player.Character.PrimaryPart.Position).Magnitude
+        local health = math.floor(player.Character.Humanoid.Health)
+        tag.Text = player.Name .. " | " .. string.format("%.0f", distance).."m | ❤️"..health
+    end
+end
+
+
+local function updateHighlight(player)
+    if player.Character and player.Character:FindFirstChild("ESPHighlight") and player.Character:FindFirstChild("Humanoid") then
+        if player.Character.Humanoid.Health <= 0 then
+            player.Character.ESPHighlight.FillColor = Color3.fromRGB(120, 0, 0) -- แดงเข้มตอนตาย
+        else
+            player.Character.ESPHighlight.FillColor = Color3.fromRGB(255, 0, 0) -- แดงสดตอนอยู่
+        end
+    end
+end
+
+
+local function setupESP(player)
+    if player ~= LocalPlayer then
+        player.CharacterAdded:Connect(function()
+            wait(0.1)
+            createHighlight(player)
+            createNameTag(player)
+        end)
+        if player.Character then
+            createHighlight(player)
+            createNameTag(player)
+        end
+    end
+end
+
+
+for _, player in ipairs(Players:GetPlayers()) do
+    setupESP(player)
+end
+
+
+Players.PlayerAdded:Connect(function(player)
+    setupESP(player)
+end)
+
+
+while true do
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            if player.Character and player.Character:FindFirstChild("Humanoid") then
+                updateNameTag(player)
+                updateHighlight(player)
+            end
+        end
+    end
+    wait(0.3)
+end
+end)
+
+Section:NewButton("aim lock player (BIND C)", "binds the screen to the player, making it easy to access", function()
+    local UIS = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local localPlayer = Players.LocalPlayer
+local mouse = localPlayer:GetMouse()
+
+local targetLock = false
+local lockedPlayer = nil
+
+local function getClosestPlayer()
+    local closestPlayer = nil
+    local shortestDistance = math.huge
+
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local character = player.Character
+            local torso = character:FindFirstChild("HumanoidRootPart")
+            local screenPos = workspace.CurrentCamera:WorldToScreenPoint(torso.Position)
+            local mousePos = Vector2.new(mouse.X, mouse.Y)
+            local distance = (mousePos - Vector2.new(screenPos.X, screenPos.Y)).Magnitude
+
+            if distance < shortestDistance then
+                shortestDistance = distance
+                closestPlayer = player
+            end
+        end
+    end
+
+    return closestPlayer
+end
+
+local function lockOntoPlayer()
+    local closestPlayer = getClosestPlayer()
+
+    if closestPlayer and closestPlayer.Character then
+        local torso = closestPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if torso then
+            mouse.TargetFilter = torso
+            lockedPlayer = closestPlayer
+            targetLock = true
+        end
+    end
+end
+
+
+local function updateLock()
+    if lockedPlayer and lockedPlayer.Character then
+        local torso = lockedPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if torso then
+            workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, torso.Position)
+        end
+    end
+end
+
+
+UIS.InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.C then
+        if not targetLock then
+            lockOntoPlayer()
+        else
+            mouse.TargetFilter = nil
+            lockedPlayer = nil
+            targetLock = false
+        end
+    end
+end)
+
+RunService.RenderStepped:Connect(function()
+    if targetLock then
+        updateLock()
+    end
+end)
+
+
+
+
+      
+end)
+
+
+local Section = Tab:NewSection("Auto Farming(BETA)")
+
+Section:NewButton("Auto collector DeathSoul", "collect death soul", function()
+    local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInput = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRoot = character:WaitForChild("HumanoidRootPart")
+
+local isRunning = true
+
+UserInput.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
+        isRunning = false
+    end
+end)
+
+-- Функция для телепортации к "OPSoul" с периодом в 1 секунду
+local function teleportToSouls()
+    while isRunning do
+        local souls = {}
+        
+        for _, obj in pairs(game:GetDescendants()) do
+            if obj.Name == "DeathSoul" and obj:IsA("BasePart") then
+                table.insert(souls, obj) -- Собрать все найденные детали в таблицу
+            end
+        end
+
+        -- Телепортировать к каждому объекту "OPSoul" с задержкой
+        for _, soul in ipairs(souls) do
+            humanoidRoot.CFrame = soul.CFrame
+            wait(1) -- Задержка перед телепортацией к следующему объекту составляет 1 секунду
+        end
+        
+        wait(1) -- Дополнительная задержка в 1 секунду перед следующим циклом
+    end
+end
+
+-- Запускаем функцию в отдельном потоке
+coroutine.wrap(teleportToSouls)()
+end)
+
+Section:NewButton("Auto Collector OPSoul", "collect opsoul", function()
+    local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInput = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRoot = character:WaitForChild("HumanoidRootPart")
+
+local isRunning = true
+
+UserInput.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
+        isRunning = false
+    end
+end)
+
+-- Функция для телепортации к "OPSoul" с периодом в 1 секунду
+local function teleportToSouls()
+    while isRunning do
+        local souls = {}
+        
+        for _, obj in pairs(game:GetDescendants()) do
+            if obj.Name == "OPSoul" and obj:IsA("BasePart") then
+                table.insert(souls, obj) -- Собрать все найденные детали в таблицу
+            end
+        end
+
+        -- Телепортировать к каждому объекту "OPSoul" с задержкой
+        for _, soul in ipairs(souls) do
+            humanoidRoot.CFrame = soul.CFrame
+            wait(1) -- Задержка перед телепортацией к следующему объекту составляет 1 секунду
+        end
+        
+        wait(1) -- Дополнительная задержка в 1 секунду перед следующим циклом
+    end
+end
+
+-- Запускаем функцию в отдельном потоке
+coroutine.wrap(teleportToSouls)()
+
+end)
+
 local Tab = Window:NewTab("Мурино хоррор")
 
 local Section = Tab:NewSection("Сoming soon!")
@@ -1194,11 +1468,11 @@ local Tab = Window:NewTab("NOT my scripts")
 
 local Section = Tab:NewSection("scripts")
 
-Section:NewButton("infinite_yield", "admin panel", function()
+Section:NewButton("infinite_yield", "типо админ панель", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
 end)
 
-Section:NewButton("DEX_explorer", "files games", function()
+Section:NewButton("DEX_explorer", "позволяет залазить в файлы игры", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/UltraFEmotes/im-bored/refs/heads/main/dexnoapi.lua"))()
 end)
 
