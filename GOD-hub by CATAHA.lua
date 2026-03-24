@@ -1273,90 +1273,221 @@ end)
 
 local Section = Tab:NewSection("Auto Farming(BETA)")
 
-Section:NewButton("Auto collector DeathSoul", "collect death soul", function()
-    local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local UserInput = game:GetService("UserInputService")
+--[[
+    AUTO COLLECTOR - DEATHSOUL COLLECTOR
+    Автоматический сбор объектов с именем DeathSoul
+    Интеграция с Section:NewToggle
+--]]
 
-local player = Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRoot = character:WaitForChild("HumanoidRootPart")
+local player = game:GetService("Players").LocalPlayer
+local runService = game:GetService("RunService")
 
-local isRunning = true
+local active = false
+local connection = nil
 
-UserInput.InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
-        isRunning = false
+-- Поиск всех DeathSoul
+local function getAllDeathSouls()
+    local souls = {}
+    for _, obj in ipairs(workspace:GetDescendants()) do
+        if obj.Name == "DeathSoul" and obj:IsA("BasePart") then
+            table.insert(souls, obj)
+        end
     end
-end)
+    return souls
+end
 
--- Функция для телепортации к "OPSoul" с периодом в 1 секунду
-local function teleportToSouls()
-    while isRunning do
-        local souls = {}
-        
-        for _, obj in pairs(game:GetDescendants()) do
-            if obj.Name == "DeathSoul" and obj:IsA("BasePart") then
-                table.insert(souls, obj) -- Собрать все найденные детали в таблицу
-            end
+-- Телепортация DeathSoul к игроку
+local function collectDeathSouls()
+    if not active then return end
+    
+    local character = player.Character
+    if not character then return end
+    
+    local rootPart = character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("Head")
+    if not rootPart then return end
+    
+    local souls = getAllDeathSouls()
+    local count = 0
+    
+    for _, soul in ipairs(souls) do
+        if soul.Parent ~= character then
+            soul.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 2, 0))
+            soul.Velocity = Vector3.new(0, 0, 0)
+            count = count + 1
         end
-
-        -- Телепортировать к каждому объекту "OPSoul" с задержкой
-        for _, soul in ipairs(souls) do
-            humanoidRoot.CFrame = soul.CFrame
-            wait(1) -- Задержка перед телепортацией к следующему объекту составляет 1 секунду
-        end
-        
-        wait(1) -- Дополнительная задержка в 1 секунду перед следующим циклом
+    end
+    
+    if count > 0 then
+        print("[AUTO COLLECTOR] Collected " .. count .. " DeathSouls")
     end
 end
 
--- Запускаем функцию в отдельном потоке
-coroutine.wrap(teleportToSouls)()
-end)
-
-Section:NewButton("Auto Collector OPSoul", "collect opsoul", function()
-    local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local UserInput = game:GetService("UserInputService")
-
-local player = Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRoot = character:WaitForChild("HumanoidRootPart")
-
-local isRunning = true
-
-UserInput.InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == Enum.KeyCode.H then
-        isRunning = false
-    end
-end)
-
--- Функция для телепортации к "OPSoul" с периодом в 1 секунду
-local function teleportToSouls()
-    while isRunning do
-        local souls = {}
-        
-        for _, obj in pairs(game:GetDescendants()) do
-            if obj.Name == "OPSoul" and obj:IsA("BasePart") then
-                table.insert(souls, obj) -- Собрать все найденные детали в таблицу
-            end
+-- Функция включения/отключения
+local function toggleCollector(state)
+    if state then
+        if active then return end
+        active = true
+        connection = runService.Heartbeat:Connect(collectDeathSouls)
+        print("[AUTO COLLECTOR] ENABLED - Collecting DeathSouls")
+    else
+        if not active then return end
+        active = false
+        if connection then
+            connection:Disconnect()
+            connection = nil
         end
-
-        -- Телепортировать к каждому объекту "OPSoul" с задержкой
-        for _, soul in ipairs(souls) do
-            humanoidRoot.CFrame = soul.CFrame
-            wait(1) -- Задержка перед телепортацией к следующему объекту составляет 1 секунду
-        end
-        
-        wait(1) -- Дополнительная задержка в 1 секунду перед следующим циклом
+        print("[AUTO COLLECTOR] DISABLED")
     end
 end
 
--- Запускаем функцию в отдельном потоке
-coroutine.wrap(teleportToSouls)()
+-- Переключатель
+Section:NewToggle("Auto Collector - DeathSoul", "Automatically collects all DeathSouls to your character", toggleCollector)
 
-end)
+print("[AUTO COLLECTOR] Loaded - Collecting: DeathSoul")
+
+--[[
+    AUTO COLLECTOR - OPSOUL COLLECTOR
+    Автоматический сбор объектов с именем OPSoul
+    Интеграция с Section:NewToggle
+--]]
+
+local player = game:GetService("Players").LocalPlayer
+local runService = game:GetService("RunService")
+
+local active = false
+local connection = nil
+
+-- Поиск всех OPSoul
+local function getAllOPSouls()
+    local souls = {}
+    for _, obj in ipairs(workspace:GetDescendants()) do
+        if obj.Name == "OPSoul" and obj:IsA("BasePart") then
+            table.insert(souls, obj)
+        end
+    end
+    return souls
+end
+
+-- Телепортация OPSoul к игроку
+local function collectOPSouls()
+    if not active then return end
+    
+    local character = player.Character
+    if not character then return end
+    
+    local rootPart = character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("Head")
+    if not rootPart then return end
+    
+    local souls = getAllOPSouls()
+    local count = 0
+    
+    for _, soul in ipairs(souls) do
+        if soul.Parent ~= character then
+            soul.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 2, 0))
+            soul.Velocity = Vector3.new(0, 0, 0)
+            count = count + 1
+        end
+    end
+    
+    if count > 0 then
+        print("[AUTO COLLECTOR] Collected " .. count .. " OPSouls")
+    end
+end
+
+-- Функция включения/отключения
+local function toggleCollector(state)
+    if state then
+        if active then return end
+        active = true
+        connection = runService.Heartbeat:Connect(collectOPSouls)
+        print("[AUTO COLLECTOR] ENABLED - Collecting OPSouls")
+    else
+        if not active then return end
+        active = false
+        if connection then
+            connection:Disconnect()
+            connection = nil
+        end
+        print("[AUTO COLLECTOR] DISABLED")
+    end
+end
+
+-- Переключатель
+Section:NewToggle("Auto Collector - OPSoul", "Automatically collects all OPSouls to your character", toggleCollector)
+
+print("[AUTO COLLECTOR] Loaded - Collecting: OPSoul")
+
+--[[
+    AUTO COLLECTOR - SOUL COLLECTOR
+    Автоматический сбор объектов с именем Soul
+    Интеграция с Section:NewToggle
+--]]
+
+local player = game:GetService("Players").LocalPlayer
+local runService = game:GetService("RunService")
+
+local active = false
+local connection = nil
+
+-- Поиск всех Soul
+local function getAllSouls()
+    local souls = {}
+    for _, obj in ipairs(workspace:GetDescendants()) do
+        if obj.Name == "Soul" and obj:IsA("BasePart") then
+            table.insert(souls, obj)
+        end
+    end
+    return souls
+end
+
+-- Телепортация Soul к игроку
+local function collectSouls()
+    if not active then return end
+    
+    local character = player.Character
+    if not character then return end
+    
+    local rootPart = character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("Head")
+    if not rootPart then return end
+    
+    local souls = getAllSouls()
+    local count = 0
+    
+    for _, soul in ipairs(souls) do
+        if soul.Parent ~= character then
+            soul.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 2, 0))
+            soul.Velocity = Vector3.new(0, 0, 0)
+            count = count + 1
+        end
+    end
+    
+    if count > 0 then
+        print("[AUTO COLLECTOR] Collected " .. count .. " Souls")
+    end
+end
+
+-- Функция включения/отключения
+local function toggleCollector(state)
+    if state then
+        if active then return end
+        active = true
+        connection = runService.Heartbeat:Connect(collectSouls)
+        print("[AUTO COLLECTOR] ENABLED - Collecting Souls")
+    else
+        if not active then return end
+        active = false
+        if connection then
+            connection:Disconnect()
+            connection = nil
+        end
+        print("[AUTO COLLECTOR] DISABLED")
+    end
+end
+
+-- Переключатель
+Section:NewToggle("Auto Collector - Soul", "Automatically collects all Souls to your character", toggleCollector)
+
+print("[AUTO COLLECTOR] Loaded - Collecting: Soul")
 
 local Tab = Window:NewTab("Мурино хоррор")
 
@@ -1463,6 +1594,7 @@ while true do
     wait(0.3)
 end
 end)
+
 
 local Tab = Window:NewTab("NOT my scripts")
 
