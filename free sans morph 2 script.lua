@@ -779,6 +779,10 @@ Section:NewButton("Alpha sans grind", "grinds", function()
         end
     end)
 end)
+
+local Tab = Window:NewTab("INFO")
+
+local Section = Tab:NewSection("this script is not complete. updates will be made")
 -- ============================================
 else
 keyBox.Text = ""
