@@ -1,6 +1,6 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Robojini/Tuturial_UI_Library/main/UI_Template_1"))()
 
-local Window = Library.CreateLib("CATAHA SCRIPT Free sans morph 2 ", "RJTheme3")
+local Window = Library.CreateLib("DIVINE SCRIPT Free sans morph 2 ", "RJTheme3")
 
 local Tab = Window:NewTab("Main")
 
@@ -222,7 +222,7 @@ Section:NewButton("geno sans grind", "grind", function()
 
     spawn(function()
         while autoEnabled do
-            wait(6)
+            wait(2.4)
             if autoEnabled then
                 pcall(function()
                     resetCharacter()
@@ -280,7 +280,7 @@ Section:NewButton("sudden changes grind", "grinds", function()
 
     spawn(function()
         while autoEnabled do
-            wait(6)
+            wait(2.4)
             if autoEnabled then
                 pcall(function()
                     resetCharacter()
@@ -338,12 +338,12 @@ Section:NewButton("DustDustDust grind", "grinds", function()
 
     spawn(function()
         while autoEnabled do
-            wait(6)
+            wait(2.4)
             if autoEnabled then
                 pcall(function()
                     resetCharacter()
                 end)
-                wait(0.2)
+                wait(0.1)
             end
         end
     end)
@@ -397,12 +397,12 @@ Section:NewButton("dusttrust2 grind", "grinds", function()
 
     spawn(function()
         while autoEnabled do
-            wait(6)
+            wait(2.4)
             if autoEnabled then
                 pcall(function()
                     resetCharacter()
                 end)
-                wait(0.2)
+                wait(0.1)
             end
         end
     end)
@@ -455,12 +455,12 @@ end)
 
 spawn(function()
     while autoEnabled do
-        wait(7)
+        wait(2.4)
         if autoEnabled then
             pcall(function()
                 resetCharacter()
             end)
-            wait(0.2)
+            wait(0.1)
         end
     end
 end)
@@ -514,15 +514,190 @@ Section:NewButton("Alpha sans grind", "grinds", function()
 
     spawn(function()
         while autoEnabled do
-            wait(6)
+            wait(2.4)
             if autoEnabled then
                 pcall(function()
                     resetCharacter()
                 end)
-                wait(0.2)
+                wait(0.1)
             end
         end
     end)
+end)
+
+Section:NewButton("Error404 grind", "grinds", function()
+    local player = game:GetService("Players").LocalPlayer
+    local UserInputService = game:GetService("UserInputService")
+
+    local autoEnabled = true
+    local bindKey = Enum.KeyCode.H
+    local scriptStopped = false
+
+    local function resetCharacter()
+        local character = player.Character
+        local humanoid = character and character:FindFirstChild("Humanoid")
+        if humanoid then
+            humanoid.Health = 0
+        end
+    end
+
+    local function executeAlphaSansSelection()
+        local args = {"Error404", true}
+        local gui = player:FindFirstChild("PlayerGui")
+        if not gui then return false end
+        local selectGui = gui:FindFirstChild("SelectCharacterGui")
+        if not selectGui then return false end
+        local frame = selectGui:FindFirstChild("Frame")
+        if not frame then return false end
+        local remote = frame:FindFirstChild("RemoteEvent")
+        if not remote then return false end
+        remote:FireServer(unpack(args))
+        return true
+    end
+
+    UserInputService.InputBegan:Connect(function(input, gameProcessed)
+        if input.KeyCode == bindKey and autoEnabled and not scriptStopped then
+            autoEnabled = false
+            scriptStopped = true
+        end
+    end)
+
+    spawn(function()
+        while autoEnabled do
+            pcall(function()
+                executeAlphaSansSelection()
+            end)
+            wait(0.1)
+        end
+    end)
+
+    spawn(function()
+        while autoEnabled do
+            wait(2.4)
+            if autoEnabled then
+                pcall(function()
+                    resetCharacter()
+                end)
+                wait(0.1)
+            end
+        end
+    end)
+end)
+
+Section:NewButton("farm op characters", "grinds", function()
+    local player = game:GetService("Players").LocalPlayer
+local UserInputService = game:GetService("UserInputService")
+
+local autoEnabled = true
+local bindKey = Enum.KeyCode.H
+local scriptStopped = false
+
+local function resetCharacter()
+    local character = player.Character
+    local humanoid = character and character:FindFirstChild("Humanoid")
+    if humanoid then
+        humanoid.Health = 0
+    end
+end
+
+local function executeSansSelection()
+    local gui = player:FindFirstChild("PlayerGui")
+    if not gui then return false end
+    local selectGui = gui:FindFirstChild("SelectCharacterGui")
+    if not selectGui then return false end
+    local frame = selectGui:FindFirstChild("Frame")
+    if not frame then return false end
+    local remote = frame:FindFirstChild("RemoteEvent")
+    if not remote then return false end
+    remote:FireServer(unpack({"sans", false}))
+    return true
+end
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if input.KeyCode == bindKey and autoEnabled and not scriptStopped then
+        autoEnabled = false
+        scriptStopped = true
+    end
+end)
+
+spawn(function()
+    while autoEnabled do
+        pcall(function()
+            executeSansSelection()
+        end)
+        wait(0.1)
+    end
+end)
+
+spawn(function()
+    while autoEnabled do
+        wait(2.4)
+        if autoEnabled then
+            pcall(function()
+                resetCharacter()
+            end)
+            wait(0.1)
+        end
+    end
+end)
+end)
+
+Section:NewButton("ultra sans grind", "grinds", function()
+    local player = game:GetService("Players").LocalPlayer
+local UserInputService = game:GetService("UserInputService")
+
+local autoEnabled = true
+local bindKey = Enum.KeyCode.H
+local scriptStopped = false
+
+local function resetCharacter()
+    local character = player.Character
+    local humanoid = character and character:FindFirstChild("Humanoid")
+    if humanoid then
+        humanoid.Health = 0
+    end
+end
+
+local function executeSansSelection()
+    local gui = player:FindFirstChild("PlayerGui")
+    if not gui then return false end
+    local selectGui = gui:FindFirstChild("SelectCharacterGui")
+    if not selectGui then return false end
+    local frame = selectGui:FindFirstChild("Frame")
+    if not frame then return false end
+    local remote = frame:FindFirstChild("RemoteEvent")
+    if not remote then return false end
+    remote:FireServer(unpack({"delta sans", false}))
+    return true
+end
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if input.KeyCode == bindKey and autoEnabled and not scriptStopped then
+        autoEnabled = false
+        scriptStopped = true
+    end
+end)
+
+spawn(function()
+    while autoEnabled do
+        pcall(function()
+            executeSansSelection()
+        end)
+        wait(0.1)
+    end
+end)
+
+spawn(function()
+    while autoEnabled do
+        wait(2.4)
+        if autoEnabled then
+            pcall(function()
+                resetCharacter()
+            end)
+            wait(0.1)
+        end
+    end
+end)
 end)
 
 local Tab = Window:NewTab("INFO")
