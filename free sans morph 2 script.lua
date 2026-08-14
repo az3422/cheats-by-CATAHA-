@@ -175,7 +175,7 @@ end)
 
 local Section = Tab:NewSection("Grinds resets [STOP BIND H]")
 
-Section:NewButton("geno sans grind", "grind", function()
+Section:NewButton("geno sans grind (20 resets)", "grind", function()
     local player = game:GetService("Players").LocalPlayer
     local UserInputService = game:GetService("UserInputService")
 
@@ -233,7 +233,7 @@ Section:NewButton("geno sans grind", "grind", function()
     end)
 end)
 
-Section:NewButton("sudden changes grind", "grinds", function()
+Section:NewButton("sudden changes grind (26 resets)", "grinds", function()
     local player = game:GetService("Players").LocalPlayer
     local UserInputService = game:GetService("UserInputService")
 
@@ -291,7 +291,7 @@ Section:NewButton("sudden changes grind", "grinds", function()
     end)
 end)
 
-Section:NewButton("DustDustDust grind", "grinds", function()
+Section:NewButton("DustDustDust grind(30 resets)", "grinds", function()
     local player = game:GetService("Players").LocalPlayer
     local UserInputService = game:GetService("UserInputService")
 
@@ -349,7 +349,7 @@ Section:NewButton("DustDustDust grind", "grinds", function()
     end)
 end)
 
-Section:NewButton("dusttrust2 grind", "grinds", function()
+Section:NewButton("dusttrust2 grind (32 resets)", "grinds", function()
     local player = game:GetService("Players").LocalPlayer
     local UserInputService = game:GetService("UserInputService")
 
@@ -408,7 +408,7 @@ Section:NewButton("dusttrust2 grind", "grinds", function()
     end)
 end)
 
-Section:NewButton("distrust grind", "grinds", function()
+Section:NewButton("distrust grind (17 resets)", "grinds", function()
     local player = game:GetService("Players").LocalPlayer
 local UserInputService = game:GetService("UserInputService")
 
@@ -466,7 +466,7 @@ spawn(function()
 end)
 end)
 
-Section:NewButton("Alpha sans grind", "grinds", function()
+Section:NewButton("Alpha sans grind (40 resets)", "grinds", function()
     local player = game:GetService("Players").LocalPlayer
     local UserInputService = game:GetService("UserInputService")
 
@@ -525,7 +525,7 @@ Section:NewButton("Alpha sans grind", "grinds", function()
     end)
 end)
 
-Section:NewButton("Error404 grind", "grinds", function()
+Section:NewButton("Error404 grind(35 resets)", "grinds", function()
     local player = game:GetService("Players").LocalPlayer
     local UserInputService = game:GetService("UserInputService")
 
@@ -642,7 +642,7 @@ spawn(function()
 end)
 end)
 
-Section:NewButton("ultra sans grind", "grinds", function()
+Section:NewButton("ultra sans grind (33 resets)", "grinds", function()
     local player = game:GetService("Players").LocalPlayer
 local UserInputService = game:GetService("UserInputService")
 
