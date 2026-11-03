@@ -1,0 +1,25 @@
+local p = game.Players.LocalPlayer
+local uis = game:GetService("UserInputService")
+local active = true
+local targets = {Candy = true, CandiesBucket = true, FewCandies = true}
+
+uis.InputBegan:Connect(function(i, g)
+    if not g and i.KeyCode == Enum.KeyCode.H then active = not active end
+end)
+
+task.spawn(function()
+    while true do
+        task.wait(0.5)
+        if active and p.Character then
+            local root = p.Character:FindFirstChild("HumanoidRootPart")
+            if root then
+                for _, o in ipairs(workspace:GetDescendants()) do
+                    if targets[o.Name] and o:IsA("BasePart") then
+                        root.CFrame = o.CFrame + Vector3.new(0, 3, 0)
+                        break
+                    end
+                end
+            end
+        end
+    end
+end)
